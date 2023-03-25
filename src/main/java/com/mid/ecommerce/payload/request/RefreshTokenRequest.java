@@ -1,4 +1,4 @@
-package com.mid.ecommerce.model;
+package com.mid.ecommerce.payload.request;
 
 import lombok.Data;
 

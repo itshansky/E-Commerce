@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mid.ecommerce.entity.Pengguna;
-import com.mid.ecommerce.model.RefreshTokenRequest;
 import com.mid.ecommerce.payload.request.LoginRequest;
+import com.mid.ecommerce.payload.request.RefreshTokenRequest;
 import com.mid.ecommerce.payload.request.SignupRequest;
 import com.mid.ecommerce.payload.response.JwtResponse;
 import com.mid.ecommerce.payload.response.MessageResponse;
@@ -49,10 +49,10 @@ public class AuthController {
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
         String token = jwtUtils.generateJwtToken(authentication);
-        String refreshToken = jwtUtils.generateRefresJwtToken(authentication);
+        String refreshToken = jwtUtils.generateRefreshJwtToken(authentication);
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         return ResponseEntity.ok()
-                .body(new JwtResponse(principal.getUsername(), principal.getEmail(), token, refreshToken));
+                .body(new JwtResponse(principal.getUsername(), principal.getEmail(), principal.getRoles(), token, refreshToken));
     }
     
     @PostMapping("/signup")
@@ -82,7 +82,7 @@ public class AuthController {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetailsImpl, null,
                 userDetailsImpl.getAuthorities());
         String newToken = jwtUtils.generateJwtToken(authentication);
-        String refreshToken = jwtUtils.generateRefresJwtToken(authentication);
-        return ResponseEntity.ok(new JwtResponse(username, userDetailsImpl.getEmail(), newToken, refreshToken));
+        String refreshToken = jwtUtils.generateRefreshJwtToken(authentication);
+        return ResponseEntity.ok(new JwtResponse(username, userDetailsImpl.getEmail(), userDetailsImpl.getRoles(), newToken, refreshToken));
     }
 }

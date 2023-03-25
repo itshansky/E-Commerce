@@ -57,7 +57,7 @@ public class JwtUtils {
                 .compact();
     }
     
-    public String generateRefresJwtToken(Authentication authentication) {
+    public String generateRefreshJwtToken(Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         return Jwts.builder().setSubject((principal.getUsername()))
                 .setIssuedAt(new Date())
